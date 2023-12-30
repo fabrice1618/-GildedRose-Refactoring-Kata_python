@@ -114,5 +114,25 @@ class GildedRoseTest(unittest.TestCase):
             self.assertEqual(attendu['sell_in'], items[0].sell_in)
             self.assertEqual(attendu['quality'], items[0].quality)
 
+    def test_conjured(self):
+        items = [Item(CONJURED, 3, 6)]
+        attendus = [
+            {'sell_in': 2, 'quality': 5},
+            {'sell_in': 1, 'quality': 4},
+            {'sell_in': 0, 'quality': 3},
+            {'sell_in': -1, 'quality': 1},
+            {'sell_in': -2, 'quality': 0},
+            {'sell_in': -3, 'quality': 0},
+            {'sell_in': -4, 'quality': 0},
+        ]
+        gilded_rose = GildedRose(items)
+        for attendu in attendus:
+            gilded_rose.update_quality()
+
+            self.assertEqual(CONJURED, items[0].name)
+            self.assertEqual(attendu['sell_in'], items[0].sell_in)
+            self.assertEqual(attendu['quality'], items[0].quality)
+
+
 if __name__ == '__main__':
     unittest.main()
