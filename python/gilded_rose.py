@@ -14,13 +14,62 @@ class Item:
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
 
-def quality_sub(quality, val):
-    result = quality - val
-    return result if result >= 0 else 0
+# Modifier quality et vérifier que 0 <= quality <= 50
+def quality_add(item, val):
+    result = item.quality + val
+    result = 50 if result > 50 else result
+    result = 0 if result < 0 else result
+    item.quality = result
 
-def quality_add(quality, val):
-    result = quality + val
-    return result if result <= 50 else 50
+def update_aged_brie(item):
+    # Logique de mise à jour pour Aged Brie
+    quality_add(item, 1)
+    item.sell_in = item.sell_in - 1
+    if item.sell_in < 0:
+        quality_add(item, 1)
+
+def update_backstage_passes(item):
+    # Logique de mise à jour pour Backstage Passes
+    if item.sell_in < 6:
+        quality_add(item, 3)
+    elif item.sell_in < 11:
+        quality_add(item, 2)
+    else:
+        quality_add(item, 1)
+    item.sell_in = item.sell_in - 1
+    if item.sell_in < 0:
+        item.quality = 0
+
+def update_sulfuras(item):
+    # Logique de mise à jour pour Sulfuras
+    pass
+
+def update_conjured(item):
+    # Logique de mise à jour pour Conjured
+    quality_add(item, -1)
+    item.sell_in = item.sell_in - 1
+    if item.sell_in < 0:
+        quality_add(item, -1)
+
+def update_normal_item(item):
+    # Logique de mise à jour pour les autres articles
+    quality_add(item, -1)
+    item.sell_in = item.sell_in - 1
+    if item.sell_in < 0:
+        quality_add(item, -1)
+
+# Appeler la fonction de mise à jour en fonction du type d'article
+def update(item):
+    if item.name == AGED_BRIE:
+        update_aged_brie(item)
+    elif item.name == BACKSTAGE_PASS:
+        update_backstage_passes(item)
+    elif item.name == SULFURAS:
+        update_sulfuras(item)
+    elif item.name == CONJURED:
+        update_conjured(item)
+    else:
+        update_normal_item(item)
 
 class GildedRose:
     def __init__(self, items):
@@ -28,55 +77,6 @@ class GildedRose:
 
     def update_quality(self):
         for item in self.items:
-            self.update(item)
+            update(item)
 
-    def update(self, item):
-        if item.name == AGED_BRIE:
-            self.update_aged_brie(item)
-        elif item.name == BACKSTAGE_PASS:
-            self.update_backstage_passes(item)
-        elif item.name == SULFURAS:
-            self.update_sulfuras(item)
-        elif item.name == CONJURED:
-            self.update_conjured(item)
-        else:
-            self.update_normal_item(item)
-
-    def update_aged_brie(self, item):
-        # Logique de mise à jour pour Aged Brie
-        item.quality = quality_add(item.quality, 1)
-        item.sell_in = item.sell_in - 1
-        if item.sell_in < 0:
-            item.quality = quality_add(item.quality, 1)
-
-    def update_backstage_passes(self, item):
-        # Logique de mise à jour pour Backstage Passes
-        item.quality = quality_add(item.quality, 1)
-        if item.sell_in < 11:
-            item.quality = quality_add(item.quality, 1)
-        if item.sell_in < 6:
-            item.quality = quality_add(item.quality, 1)
-
-        item.sell_in = item.sell_in - 1
-
-        if item.sell_in < 0:
-            item.quality = 0
-
-    def update_sulfuras(self, item):
-        # Logique de mise à jour pour Sulfuras
-        pass
-
-    def update_conjured(self, item):
-        # Logique de mise à jour pour Conjured
-        item.quality = quality_sub(item.quality, 1)
-        item.sell_in = item.sell_in - 1
-        if item.sell_in < 0:
-            item.quality = quality_sub(item.quality, 1)
-
-    def update_normal_item(self, item):
-        # Logique de mise à jour pour les autres articles
-        item.quality = quality_sub(item.quality, 1)
-        item.sell_in = item.sell_in - 1
-        if item.sell_in < 0:
-            item.quality = quality_sub(item.quality, 1)
 
