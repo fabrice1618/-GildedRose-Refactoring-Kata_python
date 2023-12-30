@@ -58,18 +58,6 @@ def update_normal_item(item):
     if item.sell_in < 0:
         quality_add(item, -1)
 
-# Appeler la fonction de mise à jour en fonction du type d'article
-def update(item):
-    if item.name == AGED_BRIE:
-        update_aged_brie(item)
-    elif item.name == BACKSTAGE_PASS:
-        update_backstage_passes(item)
-    elif item.name == SULFURAS:
-        update_sulfuras(item)
-    elif item.name == CONJURED:
-        update_conjured(item)
-    else:
-        update_normal_item(item)
 
 class GildedRose:
     def __init__(self, items):
@@ -77,6 +65,16 @@ class GildedRose:
 
     def update_quality(self):
         for item in self.items:
-            update(item)
+            # Appeler la fonction de mise à jour en fonction du type d'article
+            if item.name == AGED_BRIE:
+                update_aged_brie(item)
+            elif item.name == BACKSTAGE_PASS:
+                update_backstage_passes(item)
+            elif item.name == SULFURAS:
+                update_sulfuras(item)
+            elif item.name == CONJURED:
+                update_conjured(item)
+            else:
+                update_normal_item(item)
 
 
