@@ -1,18 +1,11 @@
 # -*- coding: utf-8 -*-
 
+from Item import Item
+
 AGED_BRIE = "Aged Brie"
 BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert"
 SULFURAS = "Sulfuras, Hand of Ragnaros"
 CONJURED = "Conjured Mana Cake"
-
-class Item:
-    def __init__(self, name, sell_in, quality):
-        self.name = name
-        self.sell_in = sell_in
-        self.quality = quality
-
-    def __repr__(self):
-        return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
 
 # Modifier quality et vérifier que 0 <= quality <= 50
 def quality_add(item, val):
